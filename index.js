@@ -15,15 +15,38 @@ app.set('view engine', 'njk');
 
 app.get('/', function (req, res) {
   const result = tipo(req.query.word);
+
   res.render('index', { result, word: req.query.word });
 });
 
 app.get('/favicon.ico', (req, res) => res.status(204));
 
-function tipo(text = '') {
-  const reg = /\({1}[a-zA-Z0-9\:]\){1}/gi;
+function tipo2(text = '') {
+  text = text.replace(/\s/gi, '');
+  console.log(text);
+}
 
-  text = text.replace(reg, '').replace(/\:\)/gi, '').replace(/\:\)/gi, '');
+const reg = /(\([a-zA-Z0-9\:]\))/gi;
+
+function tipo(text = '') {
+  //const reg = /\([a-zA-Z0-9\:]\)/gi;
+
+  //text = text.replace(reg, '').replace(/\:\)/gi, '').replace(/\:\)/gi, '');
+
+  while (text.match(reg)) {
+    text = text.replace(reg, '');
+  }
+
+  text = text.replace(reg, '-');
+  console.log('text 1 => ', text);
+
+  text = text.replace(/\:\)/gi, '');
+  console.log('text 2 => ', text);
+
+  text = text.replace(/\:\)/gi, '');
+  console.log('text 3 => ', text);
+
+  //console.log(text.match(/\)/g));
 
   const count_1 = (text.match(/\)/g) || []).length;
   const count_2 = (text.match(/\(/g) || []).length;
@@ -37,3 +60,5 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+
+//((:):)
