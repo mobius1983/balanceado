@@ -18,6 +18,8 @@ app.get('/', function (req, res) {
   res.render('index', { result, word: req.query.word });
 });
 
+app.get('/favicon.ico', (req, res) => res.status(204));
+
 function tipo(text = '') {
   const reg = /\({1}[a-zA-Z0-9\:]\){1}/gi;
 
