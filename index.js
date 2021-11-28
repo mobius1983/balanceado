@@ -26,12 +26,11 @@ function tipo2(text = '') {
   console.log(text);
 }
 
-const reg = /(\([a-zA-Z0-9\:]\))/gi;
+//const reg = /(\([a-zA-Z0-9\:]\))/gi;
+const reg = /\({1}([a-z0-9]*)?(?:\:\)|\:)?\){1}/gi;
 
 function tipo(text = '') {
   //const reg = /\([a-zA-Z0-9\:]\)/gi;
-
-  //text = text.replace(reg, '').replace(/\:\)/gi, '').replace(/\:\)/gi, '');
 
   while (text.match(reg)) {
     text = text.replace(reg, '');
@@ -62,3 +61,11 @@ app.listen(port, () => {
 });
 
 //((:):)
+
+//((:):) balanceado
+// :)(:)) balancedado
+/*
+^(.+?) ((?:BBB )?CCC)$
+\(([a-z0-9])?(\:\))?(\:)\)
+\(([a-z0-9])?(?:\:\))?(?:\:)?\)
+*/
