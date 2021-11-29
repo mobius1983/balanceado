@@ -23,14 +23,67 @@ app.get('/favicon.ico', (req, res) => res.status(204));
 
 function tipo2(text = '') {
   text = text.replace(/\s/gi, '');
-  console.log(text);
+  newText = text.split('');
+  console.log(newText);
+  let count = 0;
+  let saltar = false;
+  newText.map((val, i) => {
+    //console.log(val, i);
+    if (!saltar) {
+      if (val == '(') {
+        count++;
+        console.log('if 1');
+      } else if (val == ')') {
+        count--;
+        console.log('if 2');
+      } else if (val == ':') {
+        if (newText[i + 1] == ')' || newText[i + 1] == '(') {
+          //console.log('if 3');
+          if (newText[i - 1] == '(' || count > 0) {
+            console.log('if 3');
+            count--;
+          } else if (count == 0) {
+            console.log('if 4');
+            count++;
+          }
+          saltar = true;
+        }
+
+        /*
+        if ((newText[i + 1] == ')' || newText[i + 1] == '(') && count > 0) {
+          if (newText[i - 1] != '(') {
+            count--;
+          }
+
+          saltar = true;
+        } else if (newText[i + 1] == ')' || newText[i + 1] == '(') {
+          saltar = true;
+        }
+        */
+      }
+    } else {
+      saltar = false;
+    }
+    console.log(count);
+  });
+
+  console.log(count);
 }
+2;
+tipo2('(:()');
 
 //const reg = /(\([a-zA-Z0-9\:]\))/gi;
-const reg = /\({1}([a-z0-9]*)?(?:\:\)|\:)?\){1}/gi;
+//const reg = /\({1}([a-z0-9]*)?(?:\:\)|\:)?\){1}/gi;
+//const reg = /\({1}([a-z0-9]*)?(?:\:|\:\))?\){1}/gi;
+const reg_1 = /\({1}([a-z0-9]*)?(?:\:\)|\:\()\){1}/gi;
+const reg = /\({1}([a-z0-9]*)?(?:\:)\){1,2}/gi;
 
 function tipo(text = '') {
   //const reg = /\([a-zA-Z0-9\:]\)/gi;
+
+  while (text.match(reg_1)) {
+    text = text.replace(reg_1, '');
+  }
 
   while (text.match(reg)) {
     text = text.replace(reg, '');
@@ -60,8 +113,6 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
 
-//((:):)
-
 //((:):) balanceado
 // :)(:)) balancedado
 /*
@@ -69,3 +120,5 @@ app.listen(port, () => {
 \(([a-z0-9])?(\:\))?(\:)\)
 \(([a-z0-9])?(?:\:\))?(?:\:)?\)
 */
+
+//\({1}((?:\:\))?(?:\:))?\){1}
